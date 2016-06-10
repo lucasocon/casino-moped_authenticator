@@ -16,4 +16,6 @@ bin/
 # jeweler generated
 pkg
 
+.idea
+
 /Gemfile.lock

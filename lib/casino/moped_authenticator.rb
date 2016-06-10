@@ -71,7 +71,9 @@ class CASino::MopedAuthenticator
   end
 
   def extra_attributes(user)
-    extra_attributes_option.each_with_object({}) do |(attribute_name, database_column), attributes|
+    if attribute_name == 'email'
+      attributes[attribute_name] = get_email(user)
+    else
       value = get_nested(user, database_column)
       value = value.to_s if value.is_a?(Moped::BSON::ObjectId)
       attributes[attribute_name] = value
@@ -84,5 +86,9 @@ class CASino::MopedAuthenticator
 
   def collection
     @connection[@options[:collection]]
+  end
+
+  def get_email(user)
+    user['emails'].first['address']
   end
 end
